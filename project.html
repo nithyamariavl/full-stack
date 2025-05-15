@@ -1,0 +1,119 @@
+<!--<html>
+    <head>
+        <title> Services</title>
+    </head>
+    <body>
+        <form id="form1" >
+            <input type="text" id="name" placeholder="Project Name" required />
+            <input type="text" id="status" placeholder="Status (e.g., in progress)" required />
+            <button type="submit">Add Project</button>
+        </form>
+        <script>
+              
+    document.getElementById('form1').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const status = document.getElementById('status').value;
+
+      const response = await fetch('/api/services', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, status })
+      });
+
+      const data = await response.json();
+      alert(data.message || 'Project added!');
+    });
+    
+  </script>
+
+    
+    </body>
+</html>-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Form</title>
+  <link rel="stylesheet" href="project.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Create a New Project</h1>
+    <form id="projectForm">
+      <div class="form-group">
+        <label for="projectName">Project Name</label>
+        <input type="text" id="projectName" placeholder="Enter project name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="projectDescription">Project Description</label>
+        <textarea id="projectDescription" placeholder="Enter project description" required></textarea>
+      </div>
+
+        <!-- <div class="form-group">
+        <label for="projectDate"> Date</label>
+        <input type="date" id="projectDate" required>
+      </div>-->
+
+      <button type="submit" id="submit">Add Project</button>
+    </form>
+
+    <div id="projectList" class="project-list">
+      <!-- Dynamically added projects will appear here -->
+    </div>
+  </div>
+  <script>
+
+ //Form Submission (Handling User Input):
+
+         
+    document.getElementById('projectForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const projectname = document.getElementById('projectName').value;
+  const projectdescription = document.getElementById('projectDescription').value;
+ // const Date = document.getElementById('projectDate').value;
+
+  const response = await fetch('/api/services', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ projectname, projectdescription})
+  });
+
+  const data = await response.json();
+  alert(data.message || data.error);
+});
+
+   
+
+  async function loadprojects() {
+    const res = await fetch('/api/services');
+    const projects = await res.json();
+
+    const list = document.getElementById('projectList');
+    list.innerHTML = '';
+
+    projects.forEach(project => {
+      const item = document.createElement('li');
+      item.textContent = `${project.projectname}(${project.projectdescription})`;
+
+      list.appendChild(item);
+    });
+  }
+
+  window.onload = loadprojects; // Auto-run when page loads
+
+    
+  </script>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
